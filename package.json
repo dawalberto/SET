@@ -1,5 +1,6 @@
 {
   "name": "set",
+  "description": "SET(Savings, Expenses, Target)",
   "private": true,
   "version": "0.0.0",
   "type": "module",
