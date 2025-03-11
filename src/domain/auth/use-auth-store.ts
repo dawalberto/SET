@@ -1,9 +1,10 @@
 import { supabase } from "@/db/supabase-client";
+import { User } from "@supabase/supabase-js";
 import { create } from "zustand";
 
 type AuthState = {
-  user: any | null;
-  setUser: (user: any) => void;
+  user: User | null;
+  setUser: (user: User | null) => void;
   signIn: (email: string, password: string) => Promise<void>;
   signOut: () => Promise<void>;
 };
@@ -12,9 +13,12 @@ export const useAuthStore = create<AuthState>((set) => ({
   user: null,
   setUser: (user) => set({ user }),
   signIn: async (email, password) => {
-    const { user, error } = await supabase.auth.signIn({ email, password });
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
     if (error) throw new Error(error.message);
-    set({ user });
+    set({ user: data?.user ?? null });
   },
   signOut: async () => {
     const { error } = await supabase.auth.signOut();
@@ -25,8 +29,8 @@ export const useAuthStore = create<AuthState>((set) => ({
 
 // Initialize user on load
 supabase.auth.onAuthStateChange((event, session) => {
-  if (event === "SIGNED_IN") {
-    useAuthStore.getState().setUser(session?.user ?? null);
+  if (event === "SIGNED_IN" && session?.user) {
+    useAuthStore.getState().setUser(session.user);
   } else if (event === "SIGNED_OUT") {
     useAuthStore.getState().setUser(null);
   }
