@@ -1,6 +1,6 @@
 import { Button } from "@/components";
-import { useAuthStore } from "@/hooks/use-auth-store";
-import { useSavings } from "@/hooks/use-savings";
+import { useAuthStore } from "@/domain/auth/use-auth-store";
+import { useSavings } from "../hooks/use-savings";
 
 export const Savings = () => {
   const user = useAuthStore((state) => state.user);

@@ -1,12 +1,10 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import {
-  CurrentExpenses,
-  CurrentSavings,
-  Expenses,
-  Groups,
-  Savings,
-  Target,
-} from "./pages";
+import { CurrentExpenses } from "./domain/current-expenses/pages/page";
+import { CurrentSavings } from "./domain/current-savings/pages/page";
+import { Expenses } from "./domain/expenses/pages/page";
+import { Groups } from "./domain/groups/pages/page";
+import { Savings } from "./domain/savings/pages/page";
+import { Target } from "./domain/targets/pages/page";
 
 function App() {
   return (

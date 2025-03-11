@@ -1,6 +1,6 @@
 import { Button } from "@/components";
-import { useAuthStore } from "@/hooks/use-auth-store";
-import { useTargets } from "@/hooks/use-targets";
+import { useAuthStore } from "@/domain/auth/use-auth-store";
+import { useTargets } from "../hooks/use-targets";
 
 export const Target = () => {
   const user = useAuthStore((state) => state.user);
