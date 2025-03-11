@@ -6,7 +6,15 @@ const fetchExpenses = async (userId: string) => {
     .from("expenses")
     .select("*")
     .eq("user_id", userId);
-  if (error) throw new Error(error.message);
+  if (error) {
+    if (error.code === "PGRST401") {
+      // Handle RLS restriction error
+      throw new Error(
+        "Access denied: You do not have permission to access these expenses."
+      );
+    }
+    throw new Error(error.message);
+  }
   return data;
 };
 
