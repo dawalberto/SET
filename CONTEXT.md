@@ -172,30 +172,30 @@ src/
 Use `react-router-dom` to define routes in `App.tsx`:
 
 ```tsx
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Expenses from "./pages/Expenses";
-import CurrentExpenses from "./pages/CurrentExpenses";
-import Savings from "./pages/Savings";
-import CurrentSavings from "./pages/CurrentSavings";
-import Groups from "./pages/Groups";
-import Target from "./pages/Target";
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import Expenses from './pages/Expenses'
+import CurrentExpenses from './pages/CurrentExpenses'
+import Savings from './pages/Savings'
+import CurrentSavings from './pages/CurrentSavings'
+import Groups from './pages/Groups'
+import Target from './pages/Target'
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/expenses" element={<Expenses />} />
-        <Route path="/current-expenses" element={<CurrentExpenses />} />
-        <Route path="/savings" element={<Savings />} />
-        <Route path="/current-savings" element={<CurrentSavings />} />
-        <Route path="/groups" element={<Groups />} />
-        <Route path="/target" element={<Target />} />
+        <Route path='/expenses' element={<Expenses />} />
+        <Route path='/current-expenses' element={<CurrentExpenses />} />
+        <Route path='/savings' element={<Savings />} />
+        <Route path='/current-savings' element={<CurrentSavings />} />
+        <Route path='/groups' element={<Groups />} />
+        <Route path='/target' element={<Target />} />
       </Routes>
     </BrowserRouter>
-  );
+  )
 }
 
-export default App;
+export default App
 ```
 
 ---
@@ -206,17 +206,17 @@ Use Zustand to manage global state (e.g., user authentication, group membership)
 
 ```ts
 // src/stores/authStore.ts
-import create from "zustand";
+import create from 'zustand'
 
 type AuthState = {
-  user: any | null;
-  setUser: (user: any) => void;
-};
+  user: any | null
+  setUser: (user: any) => void
+}
 
 export const useAuthStore = create<AuthState>((set) => ({
   user: null,
   setUser: (user) => set({ user }),
-}));
+}))
 ```
 
 ---
@@ -227,21 +227,21 @@ Use `react-query` to fetch data from Supabase:
 
 ```ts
 // src/hooks/useExpenses.ts
-import { useQuery } from "react-query";
-import { supabase } from "../utils/supabaseClient";
+import { useQuery } from 'react-query'
+import { supabase } from '../utils/supabaseClient'
 
 const fetchExpenses = async (userId: string) => {
   const { data, error } = await supabase
-    .from("expenses")
-    .select("*")
-    .eq("user_id", userId);
-  if (error) throw new Error(error.message);
-  return data;
-};
+    .from('expenses')
+    .select('*')
+    .eq('user_id', userId)
+  if (error) throw new Error(error.message)
+  return data
+}
 
 export const useExpenses = (userId: string) => {
-  return useQuery(["expenses", userId], () => fetchExpenses(userId));
-};
+  return useQuery(['expenses', userId], () => fetchExpenses(userId))
+}
 ```
 
 ---
@@ -253,25 +253,25 @@ Each page will use the appropriate hooks and components to display data. For exa
 **Expenses Page**:
 
 ```tsx
-import { useExpenses } from "../hooks/useExpenses";
-import { useAuthStore } from "../stores/authStore";
+import { useExpenses } from '../hooks/useExpenses'
+import { useAuthStore } from '../stores/authStore'
 
 const Expenses = () => {
-  const user = useAuthStore((state) => state.user);
-  const { data: expenses, isLoading, isError } = useExpenses(user?.id);
+  const user = useAuthStore((state) => state.user)
+  const { data: expenses, isLoading, isError } = useExpenses(user?.id)
 
-  if (isLoading) return <p>Loading...</p>;
-  if (isError) return <p>Error loading expenses</p>;
+  if (isLoading) return <p>Loading...</p>
+  if (isError) return <p>Error loading expenses</p>
 
   return (
     <div>
       <h1>Expenses</h1>
       {/* Render charts and sections */}
     </div>
-  );
-};
+  )
+}
 
-export default Expenses;
+export default Expenses
 ```
 
 ---

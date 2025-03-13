@@ -1,15 +1,15 @@
-import { supabase } from "@/lib/supabase-client";
-import { useQuery } from "react-query";
+import { supabase } from '@/lib/supabase-client'
+import { useQuery } from 'react-query'
 
 const fetchGroups = async (userId: string) => {
   const { data, error } = await supabase
-    .from("groups")
-    .select("*")
-    .eq("user_id", userId);
-  if (error) throw new Error(error.message);
-  return data;
-};
+    .from('groups')
+    .select('*')
+    .eq('user_id', userId)
+  if (error) throw new Error(error.message)
+  return data
+}
 
 export const useGroups = (userId: string) => {
-  return useQuery(["groups", userId], () => fetchGroups(userId));
-};
+  return useQuery(['groups', userId], () => fetchGroups(userId))
+}

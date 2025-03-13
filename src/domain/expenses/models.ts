@@ -1,3 +1,3 @@
-import { Tables } from "@/lib/supabase";
+import { Tables } from '@/lib/supabase'
 
-export type Expense = Tables<"expenses">;
+export type Expense = Tables<'expenses'>
