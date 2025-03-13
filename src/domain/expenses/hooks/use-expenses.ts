@@ -1,8 +1,9 @@
 import { useAuthStore } from "@/domain/auth/use-auth-store";
 import { queryClient } from "@/lib/query-client";
 import { useMutation, useQuery } from "react-query";
+import { Expense } from "../models";
 import { createExpense } from "../services/create-expense";
-import { fetchExpensesById } from "../services/fetch-expenses-by-user-id";
+import { fetchExpensesByUserId } from "../services/fetch-expenses-by-user-id";
 import { updateExpense } from "../services/update-expense";
 
 export const useExpenses = (getExpenses: boolean = true) => {
@@ -11,7 +12,7 @@ export const useExpenses = (getExpenses: boolean = true) => {
 
   const expenses = useQuery(
     ["expenses", userId],
-    () => fetchExpensesById(userId),
+    () => fetchExpensesByUserId(userId),
     {
       enabled: getExpenses,
     }
@@ -21,19 +22,19 @@ export const useExpenses = (getExpenses: boolean = true) => {
     onSuccess: () => {
       queryClient.invalidateQueries(["expenses", userId]);
     },
-    onError: (error) => {
+    onError: () => {
       // TODO - Toaster
     },
   });
 
   const updateExpenseMutation = useMutation(
-    ({ expenseId, expense }: { expenseId: string; expense: any }) =>
+    ({ expenseId, expense }: { expenseId: string; expense: Expense }) =>
       updateExpense(expenseId, expense),
     {
       onSuccess: () => {
         queryClient.invalidateQueries(["expenses", userId]);
       },
-      onError: (error) => {
+      onError: () => {
         // TODO - Toaster
       },
     }

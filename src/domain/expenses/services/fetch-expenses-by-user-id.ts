@@ -1,7 +1,7 @@
 import { supabase } from "@/lib/supabase-client";
 import { handleDDBBDataError } from "@/lib/utils";
 
-export const fetchExpensesById = async (userId: string) => {
+export const fetchExpensesByUserId = async (userId: string) => {
   const { data, error } = await supabase
     .from("expenses")
     .select("*")
