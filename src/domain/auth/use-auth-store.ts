@@ -1,4 +1,4 @@
-import { supabase } from "@/db/supabase-client";
+import { supabase } from "@/lib/supabase-client";
 import { User } from "@supabase/supabase-js";
 import { create } from "zustand";
 

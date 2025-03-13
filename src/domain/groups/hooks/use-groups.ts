@@ -1,4 +1,4 @@
-import { supabase } from "@/db/supabase-client";
+import { supabase } from "@/lib/supabase-client";
 import { useQuery } from "react-query";
 
 const fetchGroups = async (userId: string) => {

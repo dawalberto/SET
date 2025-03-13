@@ -1,23 +1,47 @@
-import { supabase } from "@/db/supabase-client";
-import { useQuery } from "react-query";
+import { useAuthStore } from "@/domain/auth/use-auth-store";
+import { queryClient } from "@/lib/query-client";
+import { useMutation, useQuery } from "react-query";
+import { createExpense } from "../services/create-expense";
+import { fetchExpensesById } from "../services/fetch-expenses-by-user-id";
+import { updateExpense } from "../services/update-expense";
 
-const fetchExpenses = async (userId: string) => {
-  const { data, error } = await supabase
-    .from("expenses")
-    .select("*")
-    .eq("user_id", userId);
-  if (error) {
-    if (error.code === "PGRST401") {
-      // Handle RLS restriction error
-      throw new Error(
-        "Access denied: You do not have permission to access these expenses."
-      );
+export const useExpenses = (getExpenses: boolean = true) => {
+  const user = useAuthStore((state) => state.user);
+  const userId = user?.id || "";
+
+  const expenses = useQuery(
+    ["expenses", userId],
+    () => fetchExpensesById(userId),
+    {
+      enabled: getExpenses,
     }
-    throw new Error(error.message);
-  }
-  return data;
-};
+  );
 
-export const useExpenses = (userId: string) => {
-  return useQuery(["expenses", userId], () => fetchExpenses(userId));
+  const createExpenseMutation = useMutation(createExpense, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(["expenses", userId]);
+    },
+    onError: (error) => {
+      // TODO - Toaster
+    },
+  });
+
+  const updateExpenseMutation = useMutation(
+    ({ expenseId, expense }: { expenseId: string; expense: any }) =>
+      updateExpense(expenseId, expense),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(["expenses", userId]);
+      },
+      onError: (error) => {
+        // TODO - Toaster
+      },
+    }
+  );
+
+  return {
+    expenses,
+    createExpense: createExpenseMutation,
+    updateExpense: updateExpenseMutation,
+  };
 };
