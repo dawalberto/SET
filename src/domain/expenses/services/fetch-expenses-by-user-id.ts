@@ -1,5 +1,6 @@
 import { supabase } from '@/lib/supabase-client'
 import { handleDDBBDataError } from '@/lib/utils'
+import { Expense } from '../models'
 
 export const fetchExpensesByUserId = async (userId: string) => {
   const { data, error } = await supabase
@@ -9,5 +10,6 @@ export const fetchExpensesByUserId = async (userId: string) => {
   if (error) {
     handleDDBBDataError(error)
   }
-  return data
+  console.log('💣🚨 data', data)
+  return data as Expense[]
 }
