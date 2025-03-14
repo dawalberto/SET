@@ -1,4 +1,3 @@
-import { Button } from '@/components'
 import { useAuthStore } from '@/domain/auth/use-auth-store'
 import { useTargets } from '../hooks/use-targets'
 
@@ -12,7 +11,6 @@ export const Target = () => {
   return (
     <div>
       <h1 className='text-2xl font-bold'>Target</h1>
-      <Button onClick={() => alert('Add Target')}>Add Target</Button>
       {/* Render targets list */}
     </div>
   )

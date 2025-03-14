@@ -1,4 +1,3 @@
-import { Button } from '@/components'
 import { useAuthStore } from '@/domain/auth/use-auth-store'
 import { useGroups } from '../hooks/use-groups'
 
@@ -12,7 +11,6 @@ export const Groups = () => {
   return (
     <div>
       <h1 className='text-2xl font-bold'>Groups</h1>
-      <Button onClick={() => alert('Create Group')}>Create Group</Button>
       {/* Render groups list */}
     </div>
   )

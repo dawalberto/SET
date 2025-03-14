@@ -14,7 +14,34 @@ function App() {
           <Route path='/sign-in' element={<SignIn />} />
           <Route
             path='/expenses'
-            element={<RequireAuth children={<Expenses />} />}
+            element={
+              <RequireAuth
+                children={
+                  <Expenses
+                    formFields={[
+                      {
+                        name: 'electricity',
+                        type: 'number',
+                        label: 'Gasto en electricidad',
+                        value: 50,
+                      },
+                      {
+                        name: 'water',
+                        type: 'number',
+                        label: 'Gasto en agua',
+                        value: 30,
+                      },
+                      {
+                        name: 'internet',
+                        type: 'number',
+                        label: 'Gasto en Internet',
+                        value: 40,
+                      },
+                    ]}
+                  />
+                }
+              />
+            }
           />
           <Route
             path='/target'
