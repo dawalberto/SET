@@ -2,6 +2,7 @@ import { QueryClientProvider } from 'react-query'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { RequireAuth } from './domain/auth/components/require-auth'
 import { SignIn } from './domain/auth/pages/sign-in'
+import { ExpensesForm } from './domain/expenses/pages/expenses-form'
 import { Expenses } from './domain/expenses/pages/page'
 import { Target } from './domain/targets/pages/page'
 import { queryClient } from './lib/query-client'
@@ -15,32 +16,17 @@ function App() {
           <Route
             path='/expenses'
             element={
-              <RequireAuth
-                children={
-                  <Expenses
-                    formFields={[
-                      {
-                        name: 'electricity',
-                        type: 'number',
-                        label: 'Gasto en electricidad',
-                        value: 50,
-                      },
-                      {
-                        name: 'water',
-                        type: 'number',
-                        label: 'Gasto en agua',
-                        value: 30,
-                      },
-                      {
-                        name: 'internet',
-                        type: 'number',
-                        label: 'Gasto en Internet',
-                        value: 40,
-                      },
-                    ]}
-                  />
-                }
-              />
+              <RequireAuth>
+                <Expenses />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path='/expenses/:expensesId'
+            element={
+              <RequireAuth>
+                <ExpensesForm />
+              </RequireAuth>
             }
           />
           <Route

@@ -3,18 +3,33 @@ import { queryClient } from '@/lib/query-client'
 import { useMutation, useQuery } from 'react-query'
 import { Expense } from '../models'
 import { createExpense } from '../services/create-expense'
+import { fetchExpensesById } from '../services/fetch-expenses-by-id'
 import { fetchExpensesByUserId } from '../services/fetch-expenses-by-user-id'
 import { updateExpense } from '../services/update-expense'
 
-export const useExpenses = (getExpenses: boolean = true) => {
+export const useExpenses = ({
+  getExpensesByUserId = true,
+  expensesId,
+}: {
+  getExpensesByUserId?: boolean
+  expensesId?: string
+}) => {
   const user = useAuthStore((state) => state.user)
   const userId = user?.id || ''
 
-  const expenses = useQuery(
-    ['expenses', userId],
+  const expensesByUser = useQuery(
+    ['expensesByUser', userId],
     () => fetchExpensesByUserId(userId),
     {
-      enabled: getExpenses,
+      enabled: getExpensesByUserId,
+    },
+  )
+
+  const expensesById = useQuery(
+    ['expensesById', expensesId],
+    () => fetchExpensesById(expensesId || ''),
+    {
+      enabled: !!expensesId,
     },
   )
 
@@ -41,7 +56,8 @@ export const useExpenses = (getExpenses: boolean = true) => {
   )
 
   return {
-    expenses,
+    expensesByUser,
+    expensesById,
     createExpense: createExpenseMutation,
     updateExpense: updateExpenseMutation,
   }
